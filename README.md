@@ -7,7 +7,7 @@
 GitHub
 
 ### 实现方式
-web
+web Django
 
 ### 进度安排
 * **week13**
