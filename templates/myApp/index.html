@@ -98,7 +98,7 @@
           <br><br><br><br><br>
           <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
             <li data-name="home" class="layui-nav-item">
-                  <a href="javascript:;" href="intro">
+              <a href="javascript:;" lay-href="intro">
                 <i class="layui-icon layui-icon-about" style="font-size:20px;"></i>
                 <cite style="font-size:20px;">简介</cite>
               </a>
@@ -113,6 +113,12 @@
               <a href="javascript:;" lay-href="search" lay-tips="应用" lay-direction="2" >
                 <i class="layui-icon layui-icon-table" style="font-size:20px;"></i>
                 <cite style="font-size:20px;">垃圾记录查询</cite>
+              </a>
+            </li>
+            <li data-name="app" class="layui-nav-item">
+              <a href="javascript:;" lay-href="personal" >
+                <i class="layui-icon layui-icon-user" style="font-size:20px;"></i>
+                <cite style="font-size:20px;">个人中心</cite>
               </a>
             </li>
 
@@ -158,12 +164,12 @@
       <!-- 主体内容 -->
       <div class="layui-body" id="LAY_app_body">
         <div class="layadmin-tabsbody-item layui-show">
-             <img src='../static/bg/bg_alter_3.jpg'  width="1100" height="580" >
+             <img src='../static/bg/bg.jpg'  width="1500" >
+        </div>
       </div>
-  </div>
       <!-- 辅助元素，一般用于移动设备下遮罩 -->
       <div class="layadmin-body-shade" layadmin-event="shade"></div>
-    </div>
+      </div>
   </div>
 
   <script src="../static/layuiadmin/layui/layui.js"></script>
