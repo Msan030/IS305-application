@@ -99,4 +99,6 @@ def signup2(request):
 
     return render(request, "signup2.html")
 
+def searchtest(request):
 
+    return render(request, "searchtest.html")
