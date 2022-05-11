@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^signup$', views.signup),
     url(r'^login2$', views.login2),
     url(r'^signup2$', views.signup2),
+    url(r'^searchtest$', views.searchtest),
 
 
     # url(r'^static/(?P<path>.*)$', serve, {'document_root': 'D:/prp/ourproject/websystem/static'}),
