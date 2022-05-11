@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>个人中心</title>
+      <link rel="stylesheet" href="../static/layuiadmin/layui/css/layui.css" media="all">
+      <link rel="stylesheet" href="../static/layuiadmin/style/admin.css" media="all">
 </head>
 
 <body>
-    <nav>
-        <ul id="first">
-            <li><a href="../index.html">首页</a></li>
-            <li><a href="#">视频</a></li>
-            <li><a href="#">图片</a></li>
-        </ul>
-    </nav>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>个人中心</legend>
+</fieldset>
 
     <header>
         <div id="username">
@@ -22,8 +20,10 @@
     </header>
 
     <main>
-        <section>
-            <h2>个人信息</h2>
+    <div class="layui-col-md6">
+      <div class="layui-card">
+          <h2 class="layui-btn layui-btn-fluid">个人信息</h2>
+        <div class="layui-card-body">
             <div id="motto">
                 <h3>工作名言</h3>
                 <p>垃圾管理，人人有责。</p>
@@ -33,18 +33,25 @@
                 <p>1号居民楼</p>
                 <p>3号居民楼</p>
             </div>
-        </section>
+        </div>
+      </div>
+    </div>
 
-        <section>
-            <h2>已处理垃圾</h2>
-            <ul id="trash">
+    <div class="layui-col-md6">
+      <div class="layui-card">
+          <h2 class="layui-btn layui-btn-fluid">已处理垃圾</h2>
+
+        <div class="layui-card-body">
+           <ul id="trash">
                 <li><p>id</p><img src="20220510.png"></li>
                 <li><p>id</p><img src="20220510.png"></li>
                 <li><p>id</p><img src="20220510.png"></li>
                 <li><p>id</p><img src="20220510.png"></li>
                 <li><p>id</p><img src="20220510.png"></li>
             </ul>
-        </section>
+        </div>
+      </div>
+    </div>
     </main>
 
     <footer>
