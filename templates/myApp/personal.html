@@ -5,53 +5,187 @@
     <title>个人中心</title>
       <link rel="stylesheet" href="../static/layuiadmin/layui/css/layui.css" media="all">
       <link rel="stylesheet" href="../static/layuiadmin/style/admin.css" media="all">
+      <link rel="stylesheet" href="../static/css/personal.css" media="all">
 </head>
 
 <body>
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-  <legend>个人中心</legend>
-</fieldset>
+<div class="layui-anim layui-anim-upbit">
+    <div id="pagetitle">
+  <span>个人中心</span>
+</div>
 
     <header>
-        <div id="username">
-                <h2>Admin</h2>
-                <img src="photo.png">
+        <div>
+            <img id="headshot" src="../static/images/headshot.webp">
+            <h2 id="username">Admin</h2>
         </div>
     </header>
 
     <main>
-    <div class="layui-col-md6">
-      <div class="layui-card">
-          <h2 class="layui-btn layui-btn-fluid">个人信息</h2>
-        <div class="layui-card-body">
-            <div id="motto">
-                <h3>工作名言</h3>
-                <p>垃圾管理，人人有责。</p>
-            </div>
-            <div id="infor">
+    <div class>
+          <h2 id="info">+<br>+<br>个人信息<br>+<br>+</h2>
+
+          <div id="motto">
+               <img src="../static/images/motto.jpg">
+               <span id="mttxt">
+                    <h3>工作名言</h3>
+                    <hr>
+                    <p>垃圾管理，人人有责。</p>
+               </span>
+          </div>
+
+        <div id="bdmng">
+            <img src="../static/images/build.jpg">
+            <span id="bdtxt">
                 <h3>管理楼栋</h3>
+                <hr>
                 <p>1号居民楼</p>
-                <p>3号居民楼</p>
-            </div>
+            </span>
         </div>
-      </div>
     </div>
 
-    <div class="layui-col-md6">
-      <div class="layui-card">
-          <h2 class="layui-btn layui-btn-fluid">已处理垃圾</h2>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend id="prcssd">已处理垃圾</legend>
+</fieldset>
+<table id="demo2" lay-filter="test"></table>
 
-        <div class="layui-card-body">
-           <ul id="trash">
-                <li><p>id</p><img src="20220510.png"></li>
-                <li><p>id</p><img src="20220510.png"></li>
-                <li><p>id</p><img src="20220510.png"></li>
-                <li><p>id</p><img src="20220510.png"></li>
-                <li><p>id</p><img src="20220510.png"></li>
-            </ul>
-        </div>
-      </div>
-    </div>
+<script id="toolbarDemo" type="text/html">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn" lay-event="isAll">验证是否全选</button>
+  </div>
+</script>
+
+<script src="../static/layuiadmin/layui/layDate/layDate-v5.0.9/layDate/layDate.js"></script>
+
+<script>
+//执行一个laydate实例
+laydate.render({
+  elem: '#startTime' //指定元素
+});
+</script>
+
+<script>
+//执行一个laydate实例
+laydate.render({
+  elem: '#endTime' //指定元素
+});
+</script>
+
+<script src="../static/layuiadmin/layui/layer/layer-v3.1.1/layer/layer.js"></script>
+<script src="../static/layuiadmin/layui/layui.js"></script>
+<script>
+
+layui.use(['table','layer'], function(){
+  var table = layui.table;
+  var layer = layui.layer;
+
+  table.render({
+    elem: '#demo2'
+    ,url: 'static/layuiadmin/json/table/demo2.js' //数据接口
+    ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+      title: '提示'
+      ,layEvent: 'LAYTABLE_TIPS'
+      ,icon: 'layui-icon-tips'
+    }]
+    ,id: 'testReload'
+    ,page:{
+       limit:10,
+       limits:[5,10,20,30],
+    } //开启分页
+    ,totalRow:true
+    ,loading:true
+    ,even: true  //隔行背景
+    ,cols: [[ //表头
+      {type: 'checkbox',width:100}
+      ,{field: 'id', title: 'ID',edit:"true",  width:150, sort: true, align:"center"}
+      ,{field: 'rdate',  title: '时间',edit:"true", sort: true, width:150,  align:"center"}
+      ,{field: 'rbuilding', title: '居民楼号', edit:"true", width:150, sort: true,  align:"center"}
+      ,{field: 'rfloor',  title: '楼层',edit:"true", width:150, sort: true,  align:"center"}
+      ,{field: 'rcat', title: '类型', edit:"true", width:150, sort: true,  align:"center"}
+      ,{field: 'rphoto', title: '图片', edit:"true",width:250,  align:"center", templet:function (d) {return '<img src='+d.rphoto+' />';}}
+      ,{title:'操作', toolbar: '#barDemo', width:150}
+    ]]
+  });
+
+ //监听头部工具栏
+   table.on('toolbar(test)',function(obj){
+       var checkStatus = table.checkStatus(obj.config.id);
+       switch(obj.event){
+           case 'batchDelete':
+              layer.msg('批量删除');
+           break;
+           case 'getCheckData':
+              var data = checkStatus.data;
+              layer.alert(JSON.stringify(data));
+           break;
+           case 'getCheckLength':
+              var data = checkStatus.data;
+              layer.msg('选中了：'+ data.length + ' 个');
+           break;
+           case 'isAll':
+              layer.msg(checkStatus.isAll ? '全选': '未全选');
+           break;
+
+       };
+   });
+
+ //监听复选框事件
+   table.on('checkbox(test)', function(obj){
+       console.log(obj.checked); //当前是否选中状态
+       console.log(obj.data); //选中行的相关数据
+       console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+   });
+
+ //监听单元格编辑
+   table.on('edit(test)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+       console.log(obj.value); //得到修改后的值
+       console.log(obj.field); //当前编辑的字段名
+       console.log(obj.data); //所在行的所有相关数据
+       //发送post请求更新数据
+
+   });
+
+ //监听行工具事件
+  table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      var data = obj.data; //获得当前行数据
+
+      if(obj.event === 'del'){ //删除
+         layer.confirm('真的删除行么', function(index){
+            obj.del();
+            layer.close(index);
+              //向服务端发送删除指令
+         });
+      }
+  });
+
+  // 执行搜索，表格重载
+        $('#do_search').on('click', function () {
+            // 搜索条件
+            var send_name = $('#send_name').val();
+            var send_data = $('#send_data').val();
+            table.reload('table', {
+                method: 'post'
+                , where: {
+                    'csrfmiddlewaretoken': token,
+                    'send_name': send_name,
+                    'send_data': send_data,
+                }
+                , page: {
+                    curr: 1
+                }
+            });
+        });
+
+  $('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+
+</script>
     </main>
 
     <footer>
@@ -59,8 +193,8 @@
         <ul id="note">
             <li><p>今日垃圾，今日毕。</p></li>
             <li><p>不要让今天的垃圾，成为明天的垃圾。</p></li>
-            <li><p>心灵之美，从垃圾管理开始。</p></li>
         </ul>
     </footer>
+    </div>
 </body>
 </html>
