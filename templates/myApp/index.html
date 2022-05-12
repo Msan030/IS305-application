@@ -9,6 +9,25 @@
   <link rel="stylesheet" href="../static/layuiadmin/layui/css/layui.css" media="all">
   <link rel="stylesheet" href="../static/layuiadmin/style/admin.css" media="all">
 
+    <style>
+		a:link {
+			color:lightgrey;
+			text-decoration:none;
+		}
+		a:visited {
+			color:lightgrey;
+			text-decoration:none;
+		}
+		a:hover {
+			color:white;
+			text-decoration:none;
+		}
+		a:active {
+			color:white;
+			text-decoration:none;
+		}
+	</style>
+
   <script>
   /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
   </script>
@@ -195,27 +214,66 @@
 
             </div>
 
-            <div style="background-color:grey; height: 350px;">
+{#   <div class="layui-container">#}
+{#      <div class="layui-row">#}
+{#        <div class="layui-col-md7">#}
+{#            <div>#}
+{#                <p style="font-weight: bold; padding-top: 20px;color: white">源代码仓库：</p>#}
+{#                <p><a href="https://github.com/Msan030/Trash-Detection-System" target="_blank">https://github.com/Msan030/Trash-Detection-System</a></p>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="layui-col-md5">#}
+{#            <br>#}
+{#        <div>#}
+{#            <p style="font-weight: bold;color: white">联系地址：</p>#}
+{#        </div>#}
+{#        <div>#}
+{#            <p style="color: white">上海市闵行区东川路800号</p>#}
+{#        </div>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+
+            <div style="background-color:#343434; height: 350px;">
                 <div style="padding-left: 50px; line-height: 2em;">
                     <div style="padding-top: 20px; line-height: 3em">
-                        <p style="font-family: Microsoft YaHe; font-weight:bold; font-size: 20px; letter-spacing: 5px; color: #0f0f0f">联系我们</p>
+                        <p style="font-family: Microsoft YaHe; font-weight:bold; font-size: 20px; letter-spacing: 5px; color: white">联系我们</p>
                     </div>
-                    <div>
-                        <p style="font-weight: bold; padding-top: 20px; color: #0f0f0f">源代码仓库：</p>
-                        <p><a href="https://github.com/Msan030/Trash-Detection-System" target="_blank">https://github.com/Msan030/Trash-Detection-System</a></p>
-                    </div>
+
+                    <div class="layui-container">
+                      <div class="layui-row">
+                        <div class="layui-col-md7">
+                            <div>
+                                <p style="font-weight: bold; padding-top: 20px;color: white">源代码仓库：</p>
+                                <p><a href="https://github.com/Msan030/Trash-Detection-System" target="_blank">https://github.com/Msan030/Trash-Detection-System</a></p>
+                            </div>
+                        </div>
+                        <div class="layui-col-md5">
+                        <div style=" padding-top: 20px;">
+                            <p style="font-weight: bold;color: white">联系地址：</p>
+                        </div>
                         <div>
-                        <p style="font-weight: bold;color: #0f0f0f">联系地址：</p>
+                            <p style="color: white">上海市闵行区东川路800号</p>
+                        </div>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                        <p style="color:#0f0f0f">上海市闵行区东川路800号</p>
-                    </div>
-                    <div>
-                        <p style="font-weight: bold; color: #0f0f0f">邮编：</p>
-                    </div>
-                    <div>
-                        <p style="color:#0f0f0f">200240</p>
-                    </div>
+{#                    <div>#}
+{#                        <p style="font-weight: bold; padding-top: 20px; color: white">源代码仓库：</p>#}
+{#                        <p><a href="https://github.com/Msan030/Trash-Detection-System" target="_blank">https://github.com/Msan030/Trash-Detection-System</a></p>#}
+{#                    </div>#}
+{#                        <div>#}
+{#                        <p style="font-weight: bold;color: white">联系地址：</p>#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <p style="color:white">上海市闵行区东川路800号</p>#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <p style="font-weight: bold; color: white">邮编：</p>#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <p style="color:white">200240</p>#}
+{#                    </div>#}
                 </div>
             </div>
             <img src='../static/bg/bg.jpg'  width="1500" >
