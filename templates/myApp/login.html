@@ -34,7 +34,9 @@
 
   <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="background-image:url('../static/bg/bg1.jpg'); background-size:100% 100%; padding:200px 110px; background-repeat:no-repeat; display: none;">
 
-    <div class="layadmin-user-login-main">
+{#    <div#}
+{#      style="max-width: 40%; margin: auto; position: relative; top: 30px; padding: 50px; background-color: rgba(240,248,255,0.3); border-radius:24px;">#}
+      <div class="layadmin-user-login-main">
       <div class="layadmin-user-login-box layadmin-user-login-header" style="color:white">
         <h1 style="color:white">管理员登录</h1>
       </div>
@@ -52,15 +54,21 @@
         <div class="layui-form-item">
           <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
         </div>
-        <div style="text-align:right">
-{#          <p style="color: lightgrey">还没有账户?</p>#}
-          <a href="signup">还没有账户? 点击注册</a>
+        <div class="layui-form-item">
+            <a href="signup">
+                <button class="layui-btn layui-btn-fluid">注册账户</button>
+            </a>
         </div>
 
+{#        <div style="text-align:right">#}
+{#          <p style="color: lightgrey">还没有账户?</p>#}
+{#          <a href="signup">还没有账户? 点击注册</a>#}
+{#        </div>#}
 
-      </div>
+
+{#      </div>#}
     </div>
-
+    </div>
 
 
     <!--<div class="ladmin-user-login-theme">
