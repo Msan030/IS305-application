@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+      <link rel="stylesheet" href="../static/layuiadmin/layui/css/layui.css" media="all">
+      <link rel="stylesheet" href="../static/layuiadmin/style/admin.css" media="all">
+      <link rel="stylesheet" href="../static/css/personal.css" media="all">
+    <script src="../static/js/jquery-1.11.3.js"></script>
+<script src="../static/layuiadmin/layui/layui.js"></script>
+</head>
+
+<body>
+<div class="layui-anim layui-anim-upbit">
+    <div id="pagetitle">
+  <span>个人中心</span>
+</div>
+
+    <header>
+        <div>
+            <img id="headshot" src="../static/images/headshot.webp">
+            <h2 id="username">Admin</h2>
+        </div>
+    </header>
+
+    <main>
+    <div class>
+          <h2 id="info">+<br>+<br>个人信息<br>+<br>+</h2>
+
+          <div id="motto">
+               <img src="../static/images/motto.jpg">
+               <span id="mttxt">
+                    <h3>工作名言</h3>
+                    <hr>
+                    <p>垃圾管理，人人有责。</p>
+               </span>
+          </div>
+
+        <div id="bdmng">
+            <img src="../static/images/build.jpg">
+            <span id="bdtxt">
+                <h3>管理楼栋</h3>
+                <hr>
+                <p>1号居民楼</p>
+            </span>
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend id="prcssd">已处理垃圾</legend>
+</fieldset>
+
+<script id="toolbarDemo" type="text/html">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn" lay-event="isAll">验证是否全选</button>
+  </div>
+</script>
+
+<table class="layui-table" id="allAtt" lay-filter="allAtt"></table>
+<script>
+ layui.use('table', function() {
+  var table = layui.table;
+  //方法级渲染
+table.render({
+   elem: '#allAtt'
+    ,url: 'static/layuiadmin/json/table/demo2.js' //数据接口
+    ,method: 'post'
+    ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+      title: '提示'
+      ,layEvent: 'LAYTABLE_TIPS'
+      ,icon: 'layui-icon-tips'
+    }]
+    ,id: 'allAttTable'
+    ,page: true
+    ,totalRow:true
+    ,loading:true
+    ,even: true  //隔行背景
+    ,cols: [[ //表头
+      {type: 'checkbox',width:100}
+      ,{field: 'id', title: 'ID',edit:"true",  width:150, sort: true, align:"center"}
+      ,{field: 'rdate',  title: '时间',edit:"true", sort: true, width:150,  align:"center"}
+      ,{field: 'rbuilding', title: '居民楼号', edit:"true", width:150, sort: true,  align:"center"}
+      ,{field: 'rfloor',  title: '楼层',edit:"true", width:150, sort: true,  align:"center"}
+      ,{field: 'rcat', title: '类型', edit:"true", width:150, sort: true,  align:"center"}
+      ,{field: 'rphoto', title: '图片', edit:"true",width:250,  align:"center", templet:function (d) {return '<img src='+d.rphoto+' />';}}
+    ]]
+  });
+  var active = {
+   reload: function () {
+    var dataReload = $('#dataReload');
+    var index = layer.msg('查询中，请稍后...', {icon: 16, time: false, shade: 0});
+    setTimeout(function () {
+     table.reload('allAttTable', {
+      url: 'static/layuiadmin/json/table/demo3.js'
+      ,page: {
+       curr: 1
+      }, where: {
+         id: dataReload.val()
+      }
+     })
+     layer.close(index);
+    }, 800);
+   }
+  }
+  $('.searchTable .layui-btn').on('click', function () {
+   var type = $(this).data('type');
+   active[type] ? active[type].call(this) : '';
+  })
+
+   //监听头部工具栏
+   table.on('toolbar(allAtt)',function(obj){
+       var checkStatus = table.checkStatus(obj.config.id);
+       switch(obj.event){
+           case 'batchDelete':
+              layer.msg('批量删除');
+           break;
+           case 'getCheckData':
+              var data = checkStatus.data;
+              layer.alert(JSON.stringify(data));
+           break;
+           case 'getCheckLength':
+              var data = checkStatus.data;
+              layer.msg('选中了：'+ data.length + ' 个');
+           break;
+           case 'isAll':
+              layer.msg(checkStatus.isAll ? '全选': '未全选');
+           break;
+       };
+   });
+ })
+
+</script>
+
+<script>
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+
+  //执行一个laydate实例
+  laydate.render({
+    elem: '#test1' //指定元素
+  });
+});
+</script>
+
+<script>
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+
+  //执行一个laydate实例
+  laydate.render({
+    elem: '#test2' //指定元素
+  });
+});
+</script>
+    </main>
+
+    <footer>
+        <h3>管理员须知</h3>
+        <ul id="note">
+            <li><p>今日垃圾，今日毕。</p></li>
+            <li><p>不要让今天的垃圾，成为明天的垃圾。</p></li>
+        </ul>
+    </footer>
+    </div>
+</body>
+</html>
+
+<style type="text/css">
+    .layui-table-cell{
+        text-align:center;
+        height: auto;
+        white-space: normal;
+    }
+</style>
