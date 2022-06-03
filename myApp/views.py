@@ -1,11 +1,19 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext
 import _datetime
 from . import models
+import json
+from django.http import HttpResponse
+from django.core import serializers
+from myApp.models import Records
+import datetime
+import pymysql
+from config import *
 # Create your views here.
 
 from django.http import HttpResponse
@@ -81,24 +89,30 @@ def test(request):
 
 def search(request):
 
+    # query_set = records.objects.filter(id=1)  # 查询id=1的数据
+    # query_set = records.objects.filter(pswd="123").first()  # 查询第一条数据
     return render(request, "search.html")
 
-def personal(request):
+class DateEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj,datetime.datetime):
+            return obj.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            return json.JSONEncoder.default(self,obj)
 
-    return render(request, "personal.html")
 
-def signup(request):
+def sqlsearch(request):
+    query = list(Records.objects.all().values())
+    result = {
+        "code": 0
+        ,"msg": ""
+        ,"count": 0,
+        "data": []
+    }
+    result["count"] = len(query)
+    result["data"] = list(query)
+    print(result["data"])
+    # 转换为 JSON 字符串并返回
+    return JsonResponse(result)
 
-    return render(request, "signup.html")
 
-def login2(request):
-
-    return render(request, "login2.html")
-
-def signup2(request):
-
-    return render(request, "signup2.html")
-
-def searchtest(request):
-
-    return render(request, "searchtest.html")

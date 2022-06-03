@@ -17,13 +17,7 @@ urlpatterns = [
     url(r'^monitor1$', views.monitor1),
     url(r'^test$', views.test),
     url(r'^search$', views.search),
-    url(r'^personal', views.personal),
-    url(r'^signup$', views.signup),
-    url(r'^login2$', views.login2),
-    url(r'^signup2$', views.signup2),
-    url(r'^searchtest$', views.searchtest),
-
-
+    path('sqlsearch', views.sqlsearch),
     # url(r'^static/(?P<path>.*)$', serve, {'document_root': 'D:/prp/ourproject/websystem/static'}),
 
 
