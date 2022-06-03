@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +23,7 @@
 <div class="searchTable">
 <form class="layui-form" action="">
 {#    <div class="layui-inline">#}
-{#    <input class="layui-input" style="margin-left: 20px" placeholder="请输入想查询的楼号" name="id" id="dataReload" autocomplete="off">#}
+{#    <input class="layui-input" style="margin-left: 20px" placeholder="请输入想查询的楼号" name="id" id="dataBD" autocomplete="off">#}
 {#    </div>#}
 {#    #}
 
@@ -32,7 +33,7 @@
     </div>
 
     <div class="layui-input-inline">
-    <input class="layui-input"  placeholder="请输入想查询的楼号" name="id" id="dataReload" autocomplete="off">
+    <input class="layui-input"  placeholder="请输入想查询的楼号" name="id" id="dataBD" autocomplete="off">
     </div>
 
     <div class="layui-input-inline">
@@ -40,13 +41,13 @@
     </div>
 
     <div class="layui-input-inline">
-    <input class="layui-input"  placeholder="请输入想查询的楼号" name="id2" id="dataReload2" autocomplete="off">
+    <input class="layui-input"  placeholder="请输入想查询的楼号" name="id2" id="dataFLOOR" autocomplete="off">
     </div>
 
     <div class="layui-input-inline">
     <label class="layui-form-label">垃圾类型</label>
     <div class="layui-input-block">
-        <select name="city" lay-verify="required" >
+        <select name="city" lay-verify="required" id="cat">
         <option value=""></option>
         <option value="0">纸箱</option>
         <option value="1">自行车</option>
@@ -62,7 +63,7 @@
     </div>
 
     <div class="layui-input-inline">
-    <input type="text" style="margin-left: 0px" class="layui-input" id="test1">
+    <input type="text" style="margin-left: 0px" class="layui-input" id="date1">
     </div>
 
     <div class="layui-input-inline">
@@ -70,7 +71,7 @@
     </div>
 
     <div class="layui-input-inline">
-    <input type="text" style="margin-left: 0px" class="layui-input" id="test2">
+    <input type="text" style="margin-left: 0px" class="layui-input" id="date2">
     </div>
 
     <div class="layui-input-inline">
@@ -78,7 +79,7 @@
     </div>
 
     <div class="layui-input-inline" >
-    <input class="layui-input"  placeholder="请输入想查询的ID" name="id3" id="dataReload3" autocomplete="off">
+    <input class="layui-input"  placeholder="请输入想查询的ID" name="id3" id="dataID" autocomplete="off">
     </div>
 
     </div>
@@ -90,7 +91,7 @@
     </div>
 
     <div class="layui-input-inline" style="margin-left:20px;width:120px"><form class="layui-form" action="">
-    <button type="reset" style="margin-left: 30px;;width:120px" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe9aa;</i>重置</button>
+    <button type="reset" style="margin-left: 30px;;width:120px" class="layui-btn layui-btn-primary" id="clear"><i class="layui-icon">&#xe9aa;</i>重置</button>
     </form></div>
     </div>
 
@@ -105,12 +106,13 @@
     <button class="layui-btn layui-btn" lay-event="getCheckData">获取选中行数据</button>
     <button class="layui-btn layui-btn" lay-event="getCheckLength">获取选中数目</button>
     <button class="layui-btn layui-btn" lay-event="isAll">验证是否全选</button>
+    <button class="layui-btn layui-btn-danger" lay-event="del">处理选中杂物</button>
   </div>
 </script>
 
-<script id="barDemo" type="text/html">
-  <a class="layui-btn layui-btn-xs" lay-event="del">已处理</a>
-</script>
+<!-- <script id="barDemo" type="text/html">
+    <button type = button class="layui-btn layui-btn-xs" lay-event="del">已处理</button>
+</script> -->
 
 <table class="layui-table" id="allAtt" lay-filter="allAtt"></table>
 <script>
@@ -119,7 +121,7 @@
   //方法级渲染
 table.render({
    elem: '#allAtt'
-    ,url: 'static/layuiadmin/json/table/demo2.js' //数据接口
+    ,url: 'sqlall' //数据接口
     ,method: 'post'
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
@@ -135,35 +137,59 @@ table.render({
     ,cols: [[ //表头
       {type: 'checkbox',width:100}
       ,{field: 'id', title: 'ID',edit:"true",  width:150, sort: true, align:"center"}
-      ,{field: 'rdate',  title: '时间',edit:"true", sort: true, width:150,  align:"center"}
-      ,{field: 'rbuilding', title: '居民楼号', edit:"true", width:150, sort: true,  align:"center"}
-      ,{field: 'rfloor',  title: '楼层',edit:"true", width:150, sort: true,  align:"center"}
-      ,{field: 'rcat', title: '类型', edit:"true", width:150, sort: true,  align:"center"}
+      ,{field: 'rdate',  title: '时间',edit:"true", sort: true, width:180,  align:"center"}
+      ,{field: 'rbuilding', title: '居民楼号', edit:"true", width:180, sort: true,  align:"center"}
+      ,{field: 'rfloor',  title: '楼层',edit:"true", width:180, sort: true,  align:"center"}
+      ,{field: 'rcat', title: '类型', edit:"true", width:200, sort: true,  align:"center"}
       ,{field: 'rphoto', title: '图片', edit:"true",width:250,  align:"center", templet:function (d) {return '<img src='+d.rphoto+' />';}}
-      ,{title:'操作', toolbar: '#barDemo', width:150}
+      // ,{title:'操作', toolbar: '#barDemo', width:150}
     ]]
   });
-  var active = {
-   reload: function () {
-    var dataReload = $('#dataReload');
-    var index = layer.msg('查询中，请稍后...', {icon: 16, time: false, shade: 0});
-    setTimeout(function () {
-     table.reload('allAttTable', {
-      url: 'static/layuiadmin/json/table/demo3.js'
+
+  $('#search').on('click', function () {
+    var dataBD = $('#dataBD');
+    var dataFLOOR = $('#dataFLOOR');
+    var dataID = $('#dataID');
+    var cat = $('#cat');
+    var date1 = $('#date1');
+    var date2 = $('#date2');
+    table.reload('allAttTable', {
+      url: 'sqlsearch'
       ,page: {
        curr: 1
-      }, where: {
-         id: dataReload.val()
+      }
+      , method: "post"
+      , where: {
+         rbuilding: dataBD.val(),
+         id: dataID.val(),
+         rfloor: dataFLOOR.val(),
+         rcat: cat.val(),
+         date1: date1.val(),
+         date2: date2.val()
       }
      })
-     layer.close(index);
-    }, 800);
-   }
-  }
-  $('.searchTable .layui-btn').on('click', function () {
-   var type = $(this).data('type');
-   active[type] ? active[type].call(this) : '';
-  })
+  //  var type = $(this).data('type');
+  //  active[type] ? active[type].call(this) : '';
+  });
+
+  $('#clear').on('click', function () {
+    $('#dataBD').val("");
+    $('#dataFLOOR').val("");
+    $('#dataID').val("");
+    $('#cat').val("");
+    $('#date1').val("");
+    $('#date2').val("");
+    table.reload('allAttTable', {
+      url: 'sqlall'
+      ,page: {
+       curr: 1
+      }
+      , method: "post"
+      
+     })
+  //  var type = $(this).data('type');
+  //  active[type] ? active[type].call(this) : '';
+  });
 
    //监听头部工具栏
    table.on('toolbar(allAtt)',function(obj){
@@ -183,6 +209,22 @@ table.render({
            case 'isAll':
               layer.msg(checkStatus.isAll ? '全选': '未全选');
            break;
+           case 'del':
+              var data = checkStatus.data;
+              if(data.length>0){
+              table.reload('allAttTable', {
+                url: 'sqlhandle'
+                ,page: {
+                curr: 1
+                }
+                , method: "post"
+                , where: {
+                  id: JSON.stringify(data)
+                }
+              })
+              layer.msg('处理成功');
+            }
+            else layer.msg('请选择至少一条数据');
 
        };
    });
@@ -197,7 +239,7 @@ layui.use('laydate', function(){
 
   //执行一个laydate实例
   laydate.render({
-    elem: '#test1' //指定元素
+    elem: '#date1' //指定元素
   });
 });
 </script>
@@ -208,7 +250,7 @@ layui.use('laydate', function(){
 
   //执行一个laydate实例
   laydate.render({
-    elem: '#test2' //指定元素
+    elem: '#date2' //指定元素
   });
 });
 </script>

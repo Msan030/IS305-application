@@ -28,7 +28,7 @@
 			text-decoration:none;
 		}
 	</style>
-
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 
@@ -104,25 +104,39 @@
            console.log(password);
 
 
-           if (username == 'admin' && password == '123456') {
-               layer.msg('登入成功', {
-                   offset: '15px'
-                   , icon: 1
-                   , time: 1000
-               }, function () {
-                   location.href = 'index'; //后台主页
-               });
-           }
-
-           else {
-               layer.msg('用户名或密码错误', {
-                   offset: '15px'
-                   , icon: 2
-                   , time: 1000
-               }, function () {
-                   ;
-               });
-           }
+           $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+              "username":username,
+              "password":password
+            },
+            success:function (data) {
+              // var data=JSON.parse(data)
+              if(data.status){
+                layer.msg('登录成功', {
+                    offset: '15px'
+                    , icon: 1
+                    , time: 1000
+                }, function () {
+                    location.href = 'index'; //后台主页
+                });
+              }
+              else{
+                layer.msg('用户名或密码错误', {
+                    offset: '15px'
+                    , icon: 2
+                    , time: 1000
+                }, function () {
+                    // location.href = 'login'; //后台主页
+                });
+              }
+              }
+            ,
+            erorr:function(){
+              layer.msg("网络异常");
+            }
+          });
        });
    });
 

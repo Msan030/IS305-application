@@ -77,16 +77,17 @@ layui.use('table', function(){
 
   table.render({
     elem: '#demo'
-    ,url: 'static/layuiadmin/json/table/demo3.js' //数据接口
+    ,url: 'sqlbd1' //数据接口
     ,page: true //开启分页
     ,even: true  //隔行背景
     ,cols: [[ //表头
-      {field: 'id', title: 'ID', width:200, sort: true, align:"center"}
+      {field: 'id', title: 'ID', width:120, sort: true, align:"center"}
       ,{field: 'rdate', title: '时间', sort: true, width:200,  align:"center"}
-      ,{field: 'rbuilding', title: '居民楼号', width:200, sort: true,  align:"center"}
-      ,{field: 'rfloor', title: '楼层', width:200, sort: true,  align:"center"}
+      ,{field: 'rbuilding', title: '居民楼号', width:150, sort: true,  align:"center"}
+      ,{field: 'rfloor', title: '楼层', width:150, sort: true,  align:"center"}
       ,{field: 'rcat', title: '类型', width:200, sort: true, align:"center"}
       ,{field: 'rphoto', title: '图片',  width:250,  align:"center", templet:function (d) {return '<img src='+d.rphoto+' />';}}
+      ,{field: 'isHandle', title: '已处理', width:150, sort: true,  align:"center"}
     ]]
   });
 });

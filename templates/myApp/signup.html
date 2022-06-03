@@ -28,10 +28,10 @@
 			text-decoration:none;
 		}
 	</style>
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.12.4.min.js"></script>
 
 </head>
 <body>
-
   <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="background-image:url('../static/bg/img_1.png'); background-size:100% 100%; padding:200px 110px; background-repeat:no-repeat; display: none;">
 
     <div class="layadmin-user-login-main">
@@ -50,7 +50,7 @@
         <p><br></p>
 
         <div class="layui-form-item">
-          <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">注 册</button>
+          <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-register-submit">注 册</button>
         </div>
         <div class="layui-form-item">
             <a href="login">
@@ -67,6 +67,62 @@
     </div>
 
   </div>
+
+
+<script src="../static/layuiadmin/layui/layui.all.js"></script>
+  <script>
+
+   layui.use(['form'], function(){
+       var form = layui.form;
+
+       form.on('submit(LAY-user-register-submit)', function(obj) {
+          var userinfo = obj.field;
+
+          var username = userinfo['username'];
+          var password = userinfo['password'];
+
+          console.log(userinfo);
+          console.log(username);
+          console.log(password);
+
+          $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+              "username":username,
+              "password":password
+            },
+            success:function (data) {
+              // var data=JSON.parse(data)
+              if(data.status){
+                layer.msg('注册成功', {
+                    offset: '15px'
+                    , icon: 1
+                    , time: 1000
+                }, function () {
+                    location.href = 'login'; //后台主页
+                });
+              }
+              else{
+                layer.msg('用户名已存在', {
+                    offset: '15px'
+                    , icon: 2
+                    , time: 1000
+                }, function () {
+                    // location.href = 'login'; //后台主页
+                });
+              }
+              }
+            ,
+            erorr:function(){
+              layer.msg("网络异常");
+            }
+          });
+       });
+   });
+
+  </script>
+
 
 </body>
 </html>
