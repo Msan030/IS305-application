@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>更正地址</title>
+ <style>
+
+ </style>
+ <link rel="stylesheet" href="../static/layuiadmin/layui/css/layui.css" >
+ <script src="../static/js/jquery-1.11.3.js"></script>
+ <script src="../static/layuiadmin/layui/layui.js"></script>
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>数据检索</legend>
+</fieldset>
+
+
+
+
+<div class="searchTable">
+<form class="layui-form" action="">
+{#    <div class="layui-inline">#}
+{#    <input class="layui-input" style="margin-left: 20px" placeholder="请输入想查询的楼号" name="id" id="dataBD" autocomplete="off">#}
+{#    </div>#}
+{#    #}
+
+    <div>
+    <div class="layui-input-inline">
+    <label class="layui-form-label" style="margin-left: 0px">居民楼号</label>
+    </div>
+
+    <div class="layui-input-inline">
+    <input class="layui-input"  placeholder="请输入想查询的楼号" name="id" id="dataBD" autocomplete="off">
+    </div>
+
+    <div class="layui-input-inline">
+    <label class="layui-form-label">居民楼层</label>
+    </div>
+
+    <div class="layui-input-inline">
+    <input class="layui-input"  placeholder="请输入想查询的楼号" name="id2" id="dataFLOOR" autocomplete="off">
+    </div>
+
+    <div class="layui-input-inline">
+    <label class="layui-form-label">垃圾类型</label>
+    <div class="layui-input-block">
+        <select name="city" lay-verify="required" id="cat">
+        <option value=""></option>
+        <option value="0">纸箱</option>
+        <option value="1">自行车</option>
+        <option value="2">家具</option>
+        <option value="3">鞋架</option>
+        <option value="4">其他</option>
+      </select>
+    </div></div></div>
+
+    <div style="margin-top: 20px">
+    <div class="layui-input-inline">
+    <label class="layui-form-label">起始时间</label>
+    </div>
+
+    <div class="layui-input-inline">
+    <input type="text" style="margin-left: 0px" class="layui-input" id="date1">
+    </div>
+
+    <div class="layui-input-inline">
+    <label class="layui-form-label">终止时间</label>
+    </div>
+
+    <div class="layui-input-inline">
+    <input type="text" style="margin-left: 0px" class="layui-input" id="date2">
+    </div>
+
+    <div class="layui-input-inline">
+    <label class="layui-form-label" style="margin-left: 0px">数据ID</label>
+    </div>
+
+    <div class="layui-input-inline" >
+    <input class="layui-input"  placeholder="请输入想查询的ID" name="id3" id="dataID" autocomplete="off">
+    </div>
+
+    </div>
+    </form>
+
+    <div style="margin-top: 20px;margin-left: 10px">
+    <div class="layui-input-inline" style="width:120px">
+    <button class="layui-btn" style="margin-left: 30px;width:120px" data-type="reload" id="search"><i class="layui-icon">&#xe615;</i>搜索</button>
+    </div>
+
+    <div class="layui-input-inline" style="margin-left:20px;width:120px"><form class="layui-form" action="">
+    <button type="reset" style="margin-left: 30px;;width:120px" class="layui-btn layui-btn-primary" id="clear"><i class="layui-icon">&#xe9aa;</i>重置</button>
+    </form></div>
+    </div>
+
+    </div>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>数据一览</legend>
+</fieldset>
+
+<script id="toolbarDemo" type="text/html">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn" lay-event="isAll">验证是否全选</button>
+    <button class="layui-btn layui-btn-danger" lay-event="del">处理选中杂物</button>
+  </div>
+</script>
+
+<!-- <script id="barDemo" type="text/html">
+    <button type = button class="layui-btn layui-btn-xs" lay-event="del">已处理</button>
+</script> -->
+
+<table class="layui-table" id="allAtt" lay-filter="allAtt"></table>
+<script>
+ layui.use('table', function() {
+  var table = layui.table;
+  //方法级渲染
+table.render({
+   elem: '#allAtt'
+    ,url: 'sqlall' //数据接口
+    ,method: 'post'
+    ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+      title: '提示'
+      ,layEvent: 'LAYTABLE_TIPS'
+      ,icon: 'layui-icon-tips'
+    }]
+    ,id: 'allAttTable'
+    ,page: true
+    ,totalRow:true
+    ,loading:true
+    ,even: true  //隔行背景
+    ,cols: [[ //表头
+      {type: 'checkbox',width:100}
+      ,{field: 'id', title: 'ID',edit:"true",  width:150, sort: true, align:"center"}
+      ,{field: 'rdate',  title: '时间',edit:"true", sort: true, width:180,  align:"center"}
+      ,{field: 'rbuilding', title: '居民楼号', edit:"true", width:180, sort: true,  align:"center"}
+      ,{field: 'rfloor',  title: '楼层',edit:"true", width:180, sort: true,  align:"center"}
+      ,{field: 'rcat', title: '类型', edit:"true", width:200, sort: true,  align:"center"}
+      ,{field: 'rphoto', title: '图片', edit:"true",width:250,  align:"center", templet:function (d) {return '<img src='+d.rphoto+' />';}}
+      // ,{title:'操作', toolbar: '#barDemo', width:150}
+    ]]
+  });
+
+  $('#search').on('click', function () {
+    var dataBD = $('#dataBD');
+    var dataFLOOR = $('#dataFLOOR');
+    var dataID = $('#dataID');
+    var cat = $('#cat');
+    var date1 = $('#date1');
+    var date2 = $('#date2');
+    table.reload('allAttTable', {
+      url: 'sqlsearch'
+      ,page: {
+       curr: 1
+      }
+      , method: "post"
+      , where: {
+         rbuilding: dataBD.val(),
+         id: dataID.val(),
+         rfloor: dataFLOOR.val(),
+         rcat: cat.val(),
+         date1: date1.val(),
+         date2: date2.val()
+      }
+     })
+  //  var type = $(this).data('type');
+  //  active[type] ? active[type].call(this) : '';
+  });
+
+  $('#clear').on('click', function () {
+    $('#dataBD').val("");
+    $('#dataFLOOR').val("");
+    $('#dataID').val("");
+    $('#cat').val("");
+    $('#date1').val("");
+    $('#date2').val("");
+    table.reload('allAttTable', {
+      url: 'sqlall'
+      ,page: {
+       curr: 1
+      }
+      , method: "post"
+      
+     })
+  //  var type = $(this).data('type');
+  //  active[type] ? active[type].call(this) : '';
+  });
+
+   //监听头部工具栏
+   table.on('toolbar(allAtt)',function(obj){
+       var checkStatus = table.checkStatus(obj.config.id);
+       switch(obj.event){
+           case 'batchDelete':
+              layer.msg('批量删除');
+           break;
+           case 'getCheckData':
+              var data = checkStatus.data;
+              layer.alert(JSON.stringify(data));
+           break;
+           case 'getCheckLength':
+              var data = checkStatus.data;
+              layer.msg('选中了：'+ data.length + ' 个');
+           break;
+           case 'isAll':
+              layer.msg(checkStatus.isAll ? '全选': '未全选');
+           break;
+           case 'del':
+              var data = checkStatus.data;
+              if(data.length>0){
+              table.reload('allAttTable', {
+                url: 'sqlhandle'
+                ,page: {
+                curr: 1
+                }
+                , method: "post"
+                , where: {
+                  id: JSON.stringify(data)
+                }
+              })
+              layer.msg('处理成功');
+            }
+            else layer.msg('请选择至少一条数据');
+
+       };
+   });
+
+ })
+
+</script>
+
+<script>
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+
+  //执行一个laydate实例
+  laydate.render({
+    elem: '#date1' //指定元素
+  });
+});
+</script>
+
+<script>
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+
+  //执行一个laydate实例
+  laydate.render({
+    elem: '#date2' //指定元素
+  });
+});
+</script>
+</body>
+</html>
+
+<style type="text/css">
+    .layui-table-cell{
+        text-align:center;
+        height: auto;
+        white-space: normal;
+    }
+</style>
