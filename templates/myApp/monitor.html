@@ -8,8 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="../static/layuiadmin/layui/css/layui.css"  media="all">
   <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.12.4.min.js"></script>
+
 </head>
+
+
+
 <body>
+{% csrf_token %}
+
 <div class="layui-anim layui-anim-upbit">
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
   <legend>监控画面</legend>
@@ -26,39 +33,39 @@
              </div>
         </a>
 
-        <div class="layui-card-body" style="height: 300px;">
+        <div class="layui-card-body" style="height: 300px;" id="container1">
           <img id="upimg" style="margin: auto; max-width: 470px; max-height: 300px;" />
         </div>
       </div>
 
-      <div>
+      <div id="test1">
         <input class="layui-btn layui-btn-fluid" id="upimg-input"
                  style="opacity: 0; width: 500px; position: absolute; padding-bottom: 0px; margin-left: 0px;"
-      type="file" accept="video/mp4" onchange="showImg(this)"/>
+      type="file" accept="video/mp4"  onchange="showImg(this)" />
         <!-- ⾃定义按钮效果 -->
-        <div class="layui-btn layui-btn-fluid" style="text-align: center; width: 440px;">
+        <div class="layui-btn layui-btn-fluid" style="text-align: center; width: 440px;" id="result">
           <span>上传图片</span>
         </div>
-        </div>
+      </div>
 
     </div>
 
 
     <div class="layui-col-md6">
       <div class="layui-card">
-        <a href="monitor1">
+        <a href="monitor2">
              <div style="width: 494px; margin: 0;">
                   <button class="layui-btn layui-btn-fluid" type="button">视频识别结果</button>
              </div>
         </a>
 
-        <div class="layui-card-body" style="height: 300px;">
-          <video id="upvd" autoplay="autoplay" style="margin: auto; max-width: 470px; max-height: 300px;" />
+        <div class="layui-card-body" style="height: 300px;" id="container2">
+          <video id="upvd" autoplay="autoplay" style="margin: auto; max-width: 470px; max-height: 300px;" ></video>
         </div>
 
       </div>
 
-      <div>
+      <div id="test2">
         <input class="layui-btn layui-btn-fluid" id="upvd-input"
                  style="opacity: 0; width: 500px; position: absolute; padding-bottom: 0px; margin-left: 0px;"
       type="file" accept="video/mp4" onchange="showVideo(this)"/>
@@ -69,35 +76,93 @@
         </div>
     </div>
 
+    <script>
 
-
-<script type="text/javascript">
-    function showImg(input) {
-      var file = input.files[0];
-      var reader = new FileReader()
-      // 图⽚读取成功回调函数
-      reader.onload = function(e) {
-        document.getElementById('upimg').src=e.target.result
-        console.log(file)
+      function showVideo(input) {
+        
+          var file = input.files[0];
+          var reader = new FileReader()
+          // 图⽚读取成功回调函数
+          // layer.msg("click!")
+          reader.onload = function(e) {
+              document.getElementById('upvd').src=e.target.result
+              console.log(file)
+              
+          }
+          reader.readAsDataURL(file)
       }
-      reader.readAsDataURL(file)
-    }
+    
+    </script>
 
-    function showVideo(input){
-        var file = input.files[0];
-        var reader = new FileReader()
-        // 图⽚读取成功回调函数
-        reader.onload = function(e) {
-            document.getElementById('upvd').src=e.target.result
-            console.log(file)
+<script src="../static/layuiadmin/layui/layui.all.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script>
+layui.use('upload', function(){
+
+  var upload = layui.upload;
+  $ = layui.$   //注意要定义$,该符号不是jQuery中的$
+    var locate = document.getElementById("container1");
+  //执行实例
+  
+  var uploadInst = upload.render({
+    elem: '#test1' //绑定元素
+    ,url: 'img' //上传接口,需要在views.py中配置这个接口
+    ,data:{ //需要上传这个data，不然程序也会报错
+        'csrfmiddlewaretoken':function(){
+            return $(':input:first').val()
         }
-        reader.readAsDataURL(file)
+      }
+      ,done: function(res){
+      //上传完毕回调
+          console.log(res);
+          var i = new Image(); //新建image对象，从而将文件url转换为图片
+          i.src = "../static/upimg.jpg";
+          i.style = "margin: auto; max-width: 470px; max-height: 300px;"
+          locate.append(i);
     }
+    ,error: function(){
+      //请求异常回调
+    }
+  });
+});
+</script>
+<!-- 
+<script src="../static/layuiadmin/layui/layui.all.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script>
+layui.use('upload', function(){
 
-  </script>
+  var upload = layui.upload;
+  $ = layui.$   //注意要定义$,该符号不是jQuery中的$
+    var locate = document.getElementById("container2");
+  //执行实例
+  var uploadInst = upload.render({
+    elem: '#test2' //绑定元素
+    ,url: 'video' //上传接口,需要在views.py中配置这个接口
+    ,data:{ //需要上传这个data，不然程序也会报错
+        'csrfmiddlewaretoken':function(){
+            return $(':input:second').val()
+        }
+      }
+      ,done: function(res){
+      //上传完毕回调
+          console.log(res);
+          var i = document.createElement('video'); //新建video对象，从而将文件url转换为图片
+          i.src = res.video_name;
+          i.style = "margin: auto; max-width: 470px; max-height: 300px;"
+          // {#document.dbody.appendChild(i);//将后端返回的图片加入到页面中
+          // {#content = "该植被是"+res.code+"的";
+          locate.append(i);
+    }
+    ,error: function(){
+      //请求异常回调
+    }
+  });
+});
+</script> -->
 
-    <div class="layui-col-md12">
-    </div>
+
+
   </div>
 </div>
 </div>

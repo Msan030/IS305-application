@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^intro$', views.intro),
     url(r'^monitor$', views.monitor),
     url(r'^monitor1$', views.monitor1),
+    url(r'^monitor2$', views.monitor2),
     url(r'^test$', views.test),
     url(r'^search$', views.search),
     url(r'^personal', views.personal),
@@ -28,5 +29,7 @@ urlpatterns = [
     path('sqlbd1', views.sqlbd1),
     path('sqlhandle', views.sqlhandle),
     path('sqllogin', views.login),
+    path('img', views.img),
+    path('video',views.video),
 
 ]

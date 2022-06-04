@@ -1,17 +1,23 @@
 from django.shortcuts import render
 
 # Create your views here.
+import os
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from django.template import RequestContext
 import datetime
 import json
 import _datetime
+
+import project.settings
+from yolo import predict_yolo
 from . import models
 from myApp.models import Records
 from django.db.models import Q
 from myApp.models import Users
 import hashlib
+from project.settings import *
+from . import  database
 # Create your views here.
 
 from django.http import HttpResponse
@@ -63,6 +69,64 @@ def intro(request):
 
     return render(request, "intro.html")
 
+def img(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')  # 获取前端上传的文件
+        print(type(file))
+        fix = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f') + '1'  # 给文件加前缀防止文件名重复
+        # 以下用绝对路径存储文件，之前我用相对路径一直写不对
+        curPath = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
+        # InfoServiceSystem是项目名
+        # rootPath = curPath[:curPath.find("Tra\\") + len("itemplus\\")]
+        img_path = os.path.abspath(curPath + '/static/upimg.jpg' )
+        print(img_path)
+        # 返回给前端的图片路径用相对路径，前端用绝对路径反而加载不了图片
+        img_path_res = '/static/upimg.jpg'
+        f = open(img_path, 'wb')
+        for i in file.chunks():
+            f.write(i)
+        f.close()
+        img_path_o = os.path.abspath(curPath + '/static/upimg-'+ fix+ '.jpg')
+        f = open(img_path_o, 'wb')
+        for i in file.chunks():
+            f.write(i)
+        f.close()
+        img_path_abo = os.path.abspath(curPath + '/static/outimg.jpg')
+        imgOutput = predict_yolo.YoloDetect.imageDetect(img_path,img_path_abo)
+        # imgOutput=[{"rcat" : "纸箱"}]
+        for i in range (len(imgOutput)):
+            add={
+                "rcat" : imgOutput[i]["rcat"],
+                "rphoto" : '/static/upimg-'+ fix+ '.jpg'
+            }
+            database.sqladd(add)
+        return JsonResponse({'img_name': img_path_res})
+
+def video(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')  # 获取前端上传的文件
+        print(type(file))
+        # fix = datetime.date.today().strftime('%Y%m%d') + '1'  # 给文件加前缀防止文件名重复
+        # 以下用绝对路径存储文件，之前我用相对路径一直写不对
+        curPath = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
+        # InfoServiceSystem是项目名
+        # rootPath = curPath[:curPath.find("Tra\\") + len("itemplus\\")]
+        vi_path = os.path.abspath(curPath + '/static/upvideo.mp4')
+        print(vi_path)
+        # 返回给前端的图片路径用相对路径，前端用绝对路径反而加载不了图片
+        vi_path_res = '/static/upvideo.mp4'
+        f = open(vi_path, 'wb')
+        for i in file.chunks():
+            f.write(i)
+        f.close()
+
+        # imgOutput = predict_yolo.YoloDetect.imageDetect(img_path)
+        # database.sqladd(imgOutput)
+        return JsonResponse({"status":1})
+    else :
+        return JsonResponse({"status":0})
 
 def monitor(request):
 
@@ -71,6 +135,19 @@ def monitor(request):
 def monitor1(request):
 
     return render(request, "monitor1.html")
+
+def monitor2(request):
+    # fix = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f') + '1'  # 给文件加前缀防止文件名重复
+    # # 以下用绝对路径存储文件，之前我用相对路径一直写不对
+    # curPath = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+    #
+    # # InfoServiceSystem是项目名
+    # # rootPath = curPath[:curPath.find("Tra\\") + len("itemplus\\")]
+    # vi_path = os.path.abspath(curPath + '/static/upvideo.mp4')
+    #
+    # vi_path_abo = os.path.abspath(curPath + '/static/outvideo.mp4')
+    # predict_yolo.YoloDetect.videoDetect(vi_path,vi_path_abo)
+    return render(request, "monitor2.html")
 
 def test(request):
 
