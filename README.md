@@ -1,14 +1,17 @@
 # 楼道杂物检测系统
+## 部署文档
 
 ### 简介
 一套针对图片、视频能够实时检测的楼道垃圾检测系统，包含垃圾识别算法和用户界面搭建两部分内容。项目演示详见demo.mp4文件。
 
 ### 实现方式
 **前端：**
-layui/html/css
+* layui/html/css
 
 **后端：**
-Django+MySql+YoloV3
+* Django
+* MySql
+* YoloV3
 
 ### 运行
 
